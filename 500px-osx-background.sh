@@ -15,7 +15,7 @@
 ONLY_LANDSCAPE_MODE=1
 
 # specify feed source type; available options: user, search, popular, upcoming, fresh, editors
-SRC_TYPE="user"
+SRC_TYPE="popular"
 
 # needles
 NEEDLE_TAG="<img"
@@ -100,7 +100,16 @@ done
 if [ $FOUND ]; then
 	# setting image as background
 	echo "Setting downloaded image as background"
-	osascript -e 'tell application "Finder" to set desktop picture to POSIX file "/tmp/500px_img.png"'
+
+	osascript -e 'tell application "System Events"
+    set desktopCount to count of desktops
+    	repeat with desktopNumber from 1 to desktopCount
+        	tell desktop desktopNumber
+           	 	set picture to "/tmp/500px_img.png"
+        	end tell
+    	end repeat
+	end tell'
+
 	killall Dock
 else
 	echo "No image found"
